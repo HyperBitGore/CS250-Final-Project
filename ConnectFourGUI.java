@@ -17,6 +17,8 @@ public class ConnectFourGUI extends JPanel {
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		add(lblNewLabel, BorderLayout.NORTH);
 
+		
+		
 	}
 
 }
