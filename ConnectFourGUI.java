@@ -104,6 +104,8 @@ public class ConnectFourGUI extends JPanel {
 		});
 		add(btnExit, "cell 2 11");
 
+		
+		
 	}
 
 }

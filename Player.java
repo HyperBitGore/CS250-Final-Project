@@ -1,13 +1,15 @@
+import java.awt.Color;
+import java.awt.Color;
 
 public class Player {
 	private boolean turn;
 	private int wins;
-	private int moves;
+	private Color col;
 	
-	public Player(boolean turn, int moves) {
+	public Player(boolean turn, Color col) {
 		this.turn = turn;
 		this.wins = 0;
-		this.moves = moves;
+		this.col = col;
 	}
 	
 	
@@ -28,12 +30,15 @@ public class Player {
 		this.wins = wins;
 	}
 
-	public int getMoves() {
-		return moves;
+
+
+	public Color getCol() {
+		return col;
 	}
 
-	public void setMoves(int moves) {
-		this.moves = moves;
+
+	public void setCol(Color col) {
+		this.col = col;
 	}
 	
 	
