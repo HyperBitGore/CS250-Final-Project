@@ -1,13 +1,14 @@
+import java.util.Arrays;
+import java.util.ArrayList;
 
-public class ConnectFour {
+public class ConnectFour{
 
 	public ConnectFour() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
