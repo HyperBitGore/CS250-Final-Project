@@ -18,7 +18,7 @@ public class Gameboard {
 		//calculate end position and return false if column is filled
 		int end = 0;
 		for(int i = 0; i < 6; i++, end++) {
-			if(board[column][i] == 1) {
+			if(board[column][i] != 0) {
 				end = i - 1;
 				break;
 			}
@@ -181,9 +181,9 @@ public class Gameboard {
 		g.createPiece(2, 1);
 		g.createPiece(2, 1);
 		g.createPiece(3, 1);
-		//g.createPiece(3, 2);
 		g.createPiece(3, 2);
 		g.createPiece(3, 2);
+		g.createPiece(3, 1);
 		int[][] b = g.getBoard();
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 6; j++) {
