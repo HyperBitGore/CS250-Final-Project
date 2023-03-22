@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 
@@ -28,6 +30,22 @@ public class ConnectFourGUI extends JFrame {
 	private JLabel lblColumn4;
 	private JLabel lblColumn5;
 	private JLabel lblColumn6;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ConnectFourGUI frame = new ConnectFourGUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the panel.
@@ -107,7 +125,11 @@ public class ConnectFourGUI extends JFrame {
 		
 		setVisible(true);
 		
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+
+	
 
 }
