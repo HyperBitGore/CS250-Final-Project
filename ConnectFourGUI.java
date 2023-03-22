@@ -4,12 +4,16 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
 
 public class ConnectFourGUI extends JPanel {
 	private JLabel lblNewLabel;
@@ -26,6 +30,22 @@ public class ConnectFourGUI extends JPanel {
 	private JLabel lblColumn4;
 	private JLabel lblColumn5;
 	private JLabel lblColumn6;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ConnectFourGUI frame = new ConnectFourGUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the panel.
@@ -33,7 +53,7 @@ public class ConnectFourGUI extends JPanel {
 	public ConnectFourGUI() {
 		setBackground(Color.BLACK);
 		setForeground(new Color(0, 0, 0));
-		setLayout(null);
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		lblNewLabel = new JLabel("CONNECT 4");
 		lblNewLabel.setBounds(0, 0, 0, 0);
@@ -117,8 +137,10 @@ public class ConnectFourGUI extends JPanel {
 		});
 		add(btnExit);
 
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+
+	
 
 }
