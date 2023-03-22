@@ -15,7 +15,7 @@ import java.awt.EventQueue;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 
-public class ConnectFourGUI extends JPanel {
+public class ConnectFourGUI extends JFrame {
 	private JLabel lblNewLabel;
 	private JLabel lbl_Player1;
 	private JLabel lbl_Player2;
@@ -54,6 +54,7 @@ public class ConnectFourGUI extends JPanel {
 		setBackground(Color.BLACK);
 		setForeground(new Color(0, 0, 0));
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		lblNewLabel = new JLabel("CONNECT 4");
 		lblNewLabel.setBounds(0, 0, 0, 0);
@@ -137,9 +138,9 @@ public class ConnectFourGUI extends JPanel {
 		});
 		add(btnExit);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+
 
 	
 

@@ -10,7 +10,7 @@ public class ConnectFour {
 		p = new Player(false, new Color(0, 0, 0));
 		players[1] = p;
 	}
-
+	
 	public static void main(String[] args) {
 		//ConnectFourGUI game = new ConnectFourGUI();
 		ConnectFour p = new ConnectFour();
