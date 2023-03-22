@@ -54,6 +54,7 @@ public class ConnectFourGUI extends JFrame {
 		setBackground(Color.BLACK);
 		setForeground(new Color(0, 0, 0));
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		lblNewLabel = new JLabel("CONNECT 4");
 		lblNewLabel.setForeground(Color.GREEN);
@@ -126,9 +127,9 @@ public class ConnectFourGUI extends JFrame {
 		setVisible(true);
 		
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+
 
 	
 

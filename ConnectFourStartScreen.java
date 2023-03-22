@@ -120,6 +120,11 @@ public class ConnectFourStartScreen extends JFrame {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		btnOnePlayerStart = new JButton("One Player Game");
+		btnOnePlayerStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onePlayer_Clicked();
+			}
+		});
 		btnOnePlayerStart.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		buttonGroup.add(btnOnePlayerStart);
 		btnOnePlayerStart.setFont(new Font("Agency FB", Font.PLAIN, 14));
@@ -127,6 +132,11 @@ public class ConnectFourStartScreen extends JFrame {
 		panel.add(btnOnePlayerStart);
 		
 		btnTwoPlayerStart = new JButton("Two Player Game");
+		btnTwoPlayerStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				twoPlayer_Clicked();
+			}
+		});
 		buttonGroup.add(btnTwoPlayerStart);
 		btnTwoPlayerStart.setFont(new Font("Agency FB", Font.PLAIN, 14));
 		btnTwoPlayerStart.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -149,6 +159,19 @@ public class ConnectFourStartScreen extends JFrame {
 		btnExit.setFont(new Font("Agency FB", Font.PLAIN, 14));
 		btnExit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(btnExit);
+	}
+
+	protected void twoPlayer_Clicked() {
+		// TODO Auto-generated method stub
+		ConnectFourGUI game = new ConnectFourGUI();
+		game.setVisible(true);
+	}
+
+	protected void onePlayer_Clicked() {
+		// TODO Auto-generated method stub
+		ConnectFourGUI game = new ConnectFourGUI();
+		game.setVisible(true);
+		AI comp = new AI();		
 	}
 
 	protected void aboutMenu_Clicked() {
