@@ -14,28 +14,42 @@ public class Gameboard {
 		}
 	}
 	//columns go from 0-6
-	boolean createPiece(int column) {
+	boolean createPiece(int column, int player) {
 		//calculate end position and return false if column is filled
 		int end = 0;
 		for(int i = 0; i < 6; i++, end++) {
 			if(board[column][i] == 1) {
-				i = 6;
+				end = i - 1;
+				break;
 			}
 		}
-		end--;
+		if(end == 6) {
+			end--;
+		}
+		
 		//fill board cell it ends on
-		board[column][end] = 1;
+		board[column][end] = player;
 		lastRow = end;
 		lastColumn = column;
+		//calculate the x and y
+		//y goes from 100 to 500
+		//x goes from 10 to 300
+		int x = 10 + (end * 48);
+		int y = 100 + (column * 50);
 		//add piece to pieces
-		Piece p = new Piece();
+		Piece p = new Piece(x, y, column, end);
 		pieces.add(p);
 		return true;
 	}
-	//returns last move made
+	public boolean getWinState(int player) {
+		return false;
+	}
+	
+	//returns last move column
 	public int getLastColumn() {
 		return lastColumn;
 	}
+	//returns last move row
 	public int getLastRow() {
 		return lastRow;
 	}
@@ -48,17 +62,24 @@ public class Gameboard {
 	public int[][] getBoard() {
 		return board;
 	}
+	
 	public static void main(String[] args) {
 		Gameboard g = new Gameboard();
-		g.createPiece(0);
-		g.createPiece(0);
-		g.createPiece(0);
+		g.createPiece(0, 1);
+		g.createPiece(0, 1);
+		g.createPiece(0, 1);
+		g.createPiece(1, 1);
+		g.createPiece(2, 1);
+		g.createPiece(2, 1);
 		int[][] b = g.getBoard();
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 6; j++) {
 				System.out.print(b[i][j] + " ");
 			}
 			System.out.println();
+		}
+		for(Piece p : g.getPieces()) {
+			System.out.println(p.toString());
 		}
 	}
 	
