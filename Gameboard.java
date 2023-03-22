@@ -41,7 +41,114 @@ public class Gameboard {
 		pieces.add(p);
 		return true;
 	}
+	public boolean checkDiagonals(int player, int column, int row) {
+		int c = 0;
+		int j;
+		int i;
+		//top left diagonal
+		for(i = column, j = row; i >= 0 && j >= 0; i--, j--) {
+			if(board[i][j] == player) {
+				c++;
+			}else if(c== 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//bottom right diagonal
+		for(i = column, j = row; i >= 0 && j < 6; i--, j++) {
+			if(board[i][j] == player) {
+				c++;
+			}else if(c== 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//bottom left diagonal
+		for(i = column, j = row; i < 7 && j >= 0; i++, j--) {
+			if(board[i][j] == player) {
+				c++;
+			}else if(c== 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//top right diagonal
+		for(i = column, j = row; i < 7 && j < 6; i++, j++) {
+			if(board[i][j] == player) {
+				c++;
+			}else if(c== 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		return false;
+		
+	}
+	
+	public boolean checkCardinals(int player, int column, int row) {
+		int c = 0;
+		//going left
+		for(int i = row; i >= 0; i--) {
+			if(board[column][i] == player) {
+				c++;
+			}else if(c == 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//going right
+		for(int i = row; i < 6; i++) {
+			if(board[column][i] == player) {
+				c++;
+			}else if(c == 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//going up
+		for(int i = column; i >= 0; i--) {
+			if(board[i][row] == player) {
+				c++;
+			}else if(c == 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		c = 0;
+		//going down
+		for(int i = column; i < 7; i++) {
+			if(board[i][row] == player) {
+				c++;
+			}else if(c == 4){
+				return true;
+			}else {
+				break;
+			}
+		}
+		return false;
+	}
 	public boolean getWinState(int player) {
+		for(int i = 0; i < 7; i++) {
+			for(int j = 0; j < 6; j++) {
+				if(board[i][j] == player) {
+					if(checkCardinals(player, i, j) || checkDiagonals(player, i, j)) {
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 	
@@ -69,8 +176,14 @@ public class Gameboard {
 		g.createPiece(0, 1);
 		g.createPiece(0, 1);
 		g.createPiece(1, 1);
+		g.createPiece(1, 1);
 		g.createPiece(2, 1);
 		g.createPiece(2, 1);
+		g.createPiece(2, 1);
+		g.createPiece(3, 1);
+		//g.createPiece(3, 2);
+		g.createPiece(3, 2);
+		g.createPiece(3, 2);
 		int[][] b = g.getBoard();
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 6; j++) {
@@ -78,9 +191,7 @@ public class Gameboard {
 			}
 			System.out.println();
 		}
-		for(Piece p : g.getPieces()) {
-			System.out.println(p.toString());
-		}
+		System.out.println(g.getWinState(1));
 	}
 	
 }
