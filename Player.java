@@ -11,8 +11,7 @@ public class Player {
 		this.wins = 0;
 		this.col = col;
 	}
-	
-	
+		
 	//getters and setters
 	public boolean isTurn() {
 		return turn;
@@ -30,17 +29,13 @@ public class Player {
 		this.wins = wins;
 	}
 
-
-
 	public Color getCol() {
 		return col;
 	}
-
-
+	
 	public void setCol(Color col) {
 		this.col = col;
-	}
-	
+	}	
 	
 	
 }

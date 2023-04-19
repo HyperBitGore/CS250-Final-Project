@@ -29,16 +29,20 @@ public class ConnectFourStartScreen extends JFrame {
 	private JLabel lblAuthor;
 	private JMenuBar menuBar;
 	private JMenu mnControl;
-	private JMenuItem mntmHighScoreReset;
 	private JMenuItem mntmExitGame;
 	private JMenu mnAbout;
 	private JMenuItem mntmCredits;
 	private JPanel panel;
 	private JButton btnOnePlayerStart;
 	private JButton btnTwoPlayerStart;
-	private JButton btnHighScores;
 	private JButton btnExit;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JLabel Spacer;
+	private JLabel Spacer_1;
+	private JLabel Spacer_2;
+	private JLabel Spacer_3;
+	private JLabel Spacer_4;
+	private JLabel Spacer_5;
 
 	/**
 	 * Launch the application.
@@ -68,14 +72,6 @@ public class ConnectFourStartScreen extends JFrame {
 		
 		mnControl = new JMenu("Control");
 		menuBar.add(mnControl);
-		
-		mntmHighScoreReset = new JMenuItem("Reset High Scores");
-		mntmHighScoreReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetHighScore_Clicked();
-			}
-		});
-		mnControl.add(mntmHighScoreReset);
 		
 		mntmExitGame = new JMenuItem("Exit Game");
 		mntmExitGame.addActionListener(new ActionListener() {
@@ -125,6 +121,12 @@ public class ConnectFourStartScreen extends JFrame {
 				onePlayer_Clicked();
 			}
 		});
+		
+		Spacer = new JLabel(" ");
+		panel.add(Spacer);
+		
+		Spacer_5 = new JLabel(" ");
+		panel.add(Spacer_5);
 		btnOnePlayerStart.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		buttonGroup.add(btnOnePlayerStart);
 		btnOnePlayerStart.setFont(new Font("Agency FB", Font.PLAIN, 14));
@@ -137,27 +139,32 @@ public class ConnectFourStartScreen extends JFrame {
 				twoPlayer_Clicked();
 			}
 		});
+		
+		Spacer_1 = new JLabel(" ");
+		panel.add(Spacer_1);
+		
+		Spacer_2 = new JLabel(" ");
+		panel.add(Spacer_2);
 		buttonGroup.add(btnTwoPlayerStart);
 		btnTwoPlayerStart.setFont(new Font("Agency FB", Font.PLAIN, 14));
 		btnTwoPlayerStart.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(btnTwoPlayerStart);
 		
-		btnHighScores = new JButton("High Scores");
-		buttonGroup.add(btnHighScores);
-		btnHighScores.setFont(new Font("Agency FB", Font.PLAIN, 14));
-		btnHighScores.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(btnHighScores);
-		
 		btnExit = new JButton("Exit");
+		btnExit.setAlignmentX(0.5f);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exitGame_Clicked();
 			}
 		});
-		btnExit.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		
+		Spacer_3 = new JLabel(" ");
+		panel.add(Spacer_3);
+		
+		Spacer_4 = new JLabel(" ");
+		panel.add(Spacer_4);
 		buttonGroup.add(btnExit);
 		btnExit.setFont(new Font("Agency FB", Font.PLAIN, 14));
-		btnExit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(btnExit);
 	}
 
@@ -170,8 +177,7 @@ public class ConnectFourStartScreen extends JFrame {
 	protected void onePlayer_Clicked() {
 		// TODO Auto-generated method stub
 		ConnectFourGUI game = new ConnectFourGUI();
-		game.setVisible(true);
-		AI comp = new AI();		
+		game.setVisible(true);		
 	}
 
 	protected void aboutMenu_Clicked() {
@@ -179,12 +185,7 @@ public class ConnectFourStartScreen extends JFrame {
 		JOptionPane.showMessageDialog(this, "Created by: Kellen Kopp & Hunter Lisowski\n" + "For: CS250 Final Project\n" + "Date: 2-8-2023", getTitle(), JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	protected void resetHighScore_Clicked() {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(this, "Are you sure you want to delete high scores? This cannot be undone.", getTitle(), JOptionPane.ERROR_MESSAGE);
-	}
-
-	protected void exitGame_Clicked() {
+	protected static void exitGame_Clicked() {
 		// TODO Auto-generated method stub
 		System.exit(EXIT_ON_CLOSE);
 	}
