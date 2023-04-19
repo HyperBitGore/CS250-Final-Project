@@ -17,6 +17,7 @@ import java.awt.EventQueue;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.JTextArea;
+import javax.swing.JPanel;
 
 public class ConnectFourGUI extends JFrame {
 	private JLabel playArea;
@@ -25,12 +26,13 @@ public class ConnectFourGUI extends JFrame {
 	private JLabel lblPlayerTwo;
 	private JLabel lblPlayerTwoIndicator;
 	private JButton btnExit;
-	private JTextArea gameboard;
+
 	
 	public static final int SIDE1 = 6; // number of cells on a row/column
 	public static final int SIDE2 = 7; // number of cells on a row/column
 	public static final int NUM_CELLS = SIDE1 * SIDE2; // number of cells SIDE x SIDE
 	private int[][] cells = new int[SIDE1][SIDE2]; // 2D int array storing the current
+	private JPanel panel_1;
 													//game state
 	
 	/**
@@ -56,11 +58,13 @@ public class ConnectFourGUI extends JFrame {
 		getContentPane().setBackground(new Color(0, 0, 0));
 		getContentPane().setLayout(null);
 		setSize(600, 600);
-		playArea = new JLabel("");
-		playArea.setBackground(new Color(0, 0, 0));
-		playArea.setForeground(new Color(0, 0, 0));
-		playArea.setBounds(10, 11, 568, 354);
-		getContentPane().add(playArea);
+		
+		panel_1 = new JPanel();
+		panel_1.setForeground(new Color(128, 128, 128));
+		panel_1.setBounds(10, 11, 568, 341);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(new GridLayout(SIDE1, SIDE2, 5, 0));		
+		panel_1.setBackground(new Color(192, 192, 192));
 		
 		lblPlayerOne = new JLabel("Player 1");
 		lblPlayerOne.setForeground(new Color(255, 255, 255));
@@ -104,14 +108,6 @@ public class ConnectFourGUI extends JFrame {
 		btnExit.setBounds(487, 477, 89, 22);
 		getContentPane().add(btnExit);
 		
-		gameboard = new JTextArea();
-		gameboard.setRows(SIDE1);
-		gameboard.setColumns(SIDE2);
-		gameboard.setBackground(new Color(0, 0, 0));
-		gameboard.setEditable(false);
-		gameboard.setBounds(10, 11, 568, 341);
-		getContentPane().add(gameboard);
-		
-		
+			
 	}
 }
