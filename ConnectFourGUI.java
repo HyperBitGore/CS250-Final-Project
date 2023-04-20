@@ -33,34 +33,35 @@ public class ConnectFourGUI extends JFrame {
 	
 	//private JPanel panel_1;
 	private ConnectFourPanel gamePanel;
+	private JButton btnReset;
 													//game state
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ConnectFourGUI frame = new ConnectFourGUI();
-					frame.setVisible(true);
+					//ConnectFourGUI frame = new ConnectFourGUI();
+					//frame.setVisible(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the panel.
 	 */
-	public ConnectFourGUI() {
+	public ConnectFourGUI(boolean ai) {
 		getContentPane().setBackground(new Color(0, 0, 0));
 		getContentPane().setLayout(null);
 		setSize(600, 600);
 		
-		gamePanel = new ConnectFourPanel();
+		gamePanel = new ConnectFourPanel(ai);
 		gamePanel.setForeground(new Color(128, 128, 128));
 		gamePanel.setBounds(10, 11, 568, 400);
 		getContentPane().add(gamePanel);
@@ -108,6 +109,16 @@ public class ConnectFourGUI extends JFrame {
 		btnExit.setFont(new Font("Agency FB", Font.PLAIN, 18));
 		btnExit.setBounds(487, 477, 89, 22);
 		getContentPane().add(btnExit);
+		
+		btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gamePanel.resetGame();
+			}
+		});
+		btnReset.setFont(new Font("Agency FB", Font.PLAIN, 18));
+		btnReset.setBounds(487, 443, 89, 23);
+		getContentPane().add(btnReset);
 		
 			
 	}

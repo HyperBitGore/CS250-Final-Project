@@ -170,14 +170,14 @@ public class ConnectFourStartScreen extends JFrame {
 
 	protected void twoPlayer_Clicked() {
 		// TODO Auto-generated method stub
-		ConnectFourGUI game = new ConnectFourGUI();
+		ConnectFourGUI game = new ConnectFourGUI(false);
 		game.setVisible(true);
 	}
 
 	protected void onePlayer_Clicked() {
 		// TODO Auto-generated method stub
-		ConnectFourGUI game = new ConnectFourGUI();
-		game.setVisible(true);		
+		ConnectFourGUI game = new ConnectFourGUI(true);
+		game.setVisible(true);
 	}
 
 	protected void aboutMenu_Clicked() {
