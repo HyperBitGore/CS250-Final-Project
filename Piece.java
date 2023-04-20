@@ -1,13 +1,22 @@
+import java.awt.Color;
 
 public class Piece {
 	private int x, y;
 	private int column;
 	private int row;
-	public Piece(int x, int y, int column, int row) {
+	private Color c;
+	public Piece(int x, int y, int column, int row, Color c) {
 		this.x = x;
 		this.y = y;
 		this.column = column;;
 		this.row = row;
+		this.c = c;
+	}
+	public Color getC() {
+		return c;
+	}
+	public void setC(Color c) {
+		this.c = c;
 	}
 	public int getX() {
 		return x;

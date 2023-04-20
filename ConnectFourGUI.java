@@ -18,6 +18,9 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class ConnectFourGUI extends JFrame {
 	private JLabel playArea;
@@ -28,11 +31,8 @@ public class ConnectFourGUI extends JFrame {
 	private JButton btnExit;
 
 	
-	public static final int SIDE1 = 6; // number of cells on a row/column
-	public static final int SIDE2 = 7; // number of cells on a row/column
-	public static final int NUM_CELLS = SIDE1 * SIDE2; // number of cells SIDE x SIDE
-	private int[][] cells = new int[SIDE1][SIDE2]; // 2D int array storing the current
-	private JPanel panel_1;
+	//private JPanel panel_1;
+	private ConnectFourPanel gamePanel;
 													//game state
 	
 	/**
@@ -44,6 +44,7 @@ public class ConnectFourGUI extends JFrame {
 				try {
 					ConnectFourGUI frame = new ConnectFourGUI();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,12 +60,12 @@ public class ConnectFourGUI extends JFrame {
 		getContentPane().setLayout(null);
 		setSize(600, 600);
 		
-		panel_1 = new JPanel();
-		panel_1.setForeground(new Color(128, 128, 128));
-		panel_1.setBounds(10, 11, 568, 341);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(new GridLayout(SIDE1, SIDE2, 5, 0));		
-		panel_1.setBackground(new Color(192, 192, 192));
+		gamePanel = new ConnectFourPanel();
+		gamePanel.setForeground(new Color(128, 128, 128));
+		gamePanel.setBounds(10, 11, 568, 400);
+		getContentPane().add(gamePanel);
+		//panel_1.setLayout(new GridLayout(SIDE1, SIDE2, 5, 0));		
+		gamePanel.setBackground(new Color(192, 192, 192));
 		
 		lblPlayerOne = new JLabel("Player 1");
 		lblPlayerOne.setForeground(new Color(255, 255, 255));

@@ -7,7 +7,7 @@ public class AI {
 		Gameboard gameboard = new Gameboard();
 		gameboard.getBoard();		//Get the whole board
 		
-		if(Player.isTurn(true))
+		//if(Player.isTurn(true))
 		
 		return 0;
 		

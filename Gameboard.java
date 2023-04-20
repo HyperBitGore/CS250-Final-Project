@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Gameboard {
@@ -14,7 +15,7 @@ public class Gameboard {
 		}
 	}
 	//columns go from 0-6
-	boolean createPiece(int column, int player) {
+	boolean createPiece(int column, int player, Color c) {
 		//calculate end position and return false if column is filled
 		int end = 0;
 		for(int i = 0; i < 6; i++, end++) {
@@ -23,7 +24,10 @@ public class Gameboard {
 				break;
 			}
 		}
-		if(end == 6) {
+		if(end == -1) {
+			return false;
+		}
+		else if(end == 6) {
 			end--;
 		}
 		
@@ -34,10 +38,10 @@ public class Gameboard {
 		//calculate the x and y
 		//y goes from 100 to 500
 		//x goes from 10 to 300
-		int x = 10 + (end * 48);
-		int y = 100 + (column * 50);
+		int x = 10 + column * 50;
+		int y = 40 + (end * 48);
 		//add piece to pieces
-		Piece p = new Piece(x, y, column, end);
+		Piece p = new Piece(x, y, column, end, c);
 		pieces.add(p);
 		return true;
 	}
@@ -170,28 +174,5 @@ public class Gameboard {
 		return board;
 	}
 	
-	public static void main(String[] args) {
-		Gameboard g = new Gameboard();
-		g.createPiece(0, 1);
-		g.createPiece(0, 1);
-		g.createPiece(0, 1);
-		g.createPiece(1, 1);
-		g.createPiece(1, 1);
-		g.createPiece(2, 1);
-		g.createPiece(2, 1);
-		g.createPiece(2, 1);
-		g.createPiece(3, 1);
-		g.createPiece(3, 2);
-		g.createPiece(3, 2);
-		g.createPiece(3, 1);
-		int[][] b = g.getBoard();
-		for(int i = 0; i < 7; i++) {
-			for(int j = 0; j < 6; j++) {
-				System.out.print(b[i][j] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println(g.getWinState(1));
-	}
 	
 }
