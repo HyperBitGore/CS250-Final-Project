@@ -6,8 +6,10 @@ public class Gameboard {
 	private int[][] board = new int[7][6];
 	private int lastColumn = -1;
 	private int lastRow = -1;
+	private ArrayList<Piece> win_pieces;
 	public Gameboard() {
 		pieces = new ArrayList<>();
+		win_pieces = new ArrayList<>();
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 6; j++) {
 				board[i][j] = 0;
@@ -52,6 +54,7 @@ public class Gameboard {
 		//top left diagonal
 		for(i = column, j = row; i >= 0 && j >= 0; i--, j--) {
 			if(board[i][j] == player) {
+				win_pieces.add(new Piece(0, 0, i, j, Color.RED));
 				c++;
 			}else if(c== 4){
 				return true;
@@ -59,32 +62,38 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//bottom right diagonal
 		for(i = column, j = row; i >= 0 && j < 6; i--, j++) {
 			if(board[i][j] == player) {
 				c++;
+				win_pieces.add(new Piece(0, 0, i, j, Color.RED));
 			}else if(c== 4){
 				return true;
 			}else {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//bottom left diagonal
 		for(i = column, j = row; i < 7 && j >= 0; i++, j--) {
 			if(board[i][j] == player) {
 				c++;
+				win_pieces.add(new Piece(0, 0, i, j, Color.RED));
 			}else if(c== 4){
 				return true;
 			}else {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//top right diagonal
 		for(i = column, j = row; i < 7 && j < 6; i++, j++) {
 			if(board[i][j] == player) {
+				win_pieces.add(new Piece(0, 0, i, j, Color.RED));
 				c++;
 			}else if(c== 4){
 				return true;
@@ -92,6 +101,7 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		return false;
 		
 	}
@@ -101,6 +111,7 @@ public class Gameboard {
 		//going left
 		for(int i = row; i >= 0; i--) {
 			if(board[column][i] == player) {
+				win_pieces.add(new Piece(0, 0, column, i, Color.RED));
 				c++;
 			}else if(c == 4){
 				return true;
@@ -108,10 +119,12 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//going right
 		for(int i = row; i < 6; i++) {
 			if(board[column][i] == player) {
+				win_pieces.add(new Piece(0, 0, column, i, Color.RED));
 				c++;
 			}else if(c == 4){
 				return true;
@@ -119,10 +132,12 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//going up
 		for(int i = column; i >= 0; i--) {
 			if(board[i][row] == player) {
+				win_pieces.add(new Piece(0, 0, i, row, Color.RED));
 				c++;
 			}else if(c == 4){
 				return true;
@@ -130,10 +145,12 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		c = 0;
 		//going down
 		for(int i = column; i < 7; i++) {
 			if(board[i][row] == player) {
+				win_pieces.add(new Piece(0, 0, i, row, Color.RED));
 				c++;
 			}else if(c == 4){
 				return true;
@@ -141,9 +158,11 @@ public class Gameboard {
 				break;
 			}
 		}
+		win_pieces.clear();
 		return false;
 	}
 	public boolean getWinState(int player) {
+		win_pieces.clear();
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 6; j++) {
 				if(board[i][j] == player) {
@@ -154,6 +173,9 @@ public class Gameboard {
 			}
 		}
 		return false;
+	}
+	public ArrayList<Piece> getWin(){
+		return win_pieces;
 	}
 	
 	//returns last move column
