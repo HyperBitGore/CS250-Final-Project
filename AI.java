@@ -35,25 +35,34 @@ public class AI {
 				plan.remove(r);
 				break;
 			case EXECUTING:
-				//follow plan from searching turn, check if plan gets blocked and change
-				if(plan.size() > 0) {
-					ret = plan.get(0).getColumn();
+				if(!checkExecution()) {
+					int re = searching();
+					ret = plan.get(re).getColumn();
+					plan.remove(re);
 				}else {
-					state = State.SEARCHING;
-					ret = (int) (Math.random() * 6);
+					//follow plan from searching turn, check if plan gets blocked and change
+					if(plan.size() > 0) {
+						ret = plan.get(0).getColumn();
+					}else {
+						state = State.SEARCHING;
+						ret = (int) (Math.random() * 6);
+					}
 				}
 				break;
 			}
-		}
+			}
 		return ret;
 		
 	}
 	
-	public int executing() {
-		//check if desired spot has been filled
-		
+	public boolean checkExecution() {
+		Piece p = plan.get(0);
+		int[][] board = gb.getBoard();
+		if(board[p.getColumn()][p.getRow()] != 0) {
+			return false;
+		}
 		//place piece
-		return 0;
+		return true;
 	}
 	
 	private ArrayList<Piece> checkDiagonalSearch(){
