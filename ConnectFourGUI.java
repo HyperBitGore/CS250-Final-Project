@@ -67,7 +67,7 @@ public class ConnectFourGUI extends JFrame {
 		
 		gamePanel = new ConnectFourPanel(ai);
 		gamePanel.setForeground(new Color(128, 128, 128));
-		gamePanel.setBounds(10, 11, 568, 550);
+		gamePanel.setBounds(10, 11, 500, 550);
 		getContentPane().add(gamePanel);
 		//panel_1.setLayout(new GridLayout(SIDE1, SIDE2, 5, 0));		
 		gamePanel.setBackground(new Color(192, 192, 192));

@@ -44,8 +44,9 @@ public class AI {
 					if(plan.size() > 0) {
 						ret = plan.get(0).getColumn();
 					}else {
-						state = State.SEARCHING;
-						ret = (int) (Math.random() * 6);
+						int re = searching();
+						ret = plan.get(re).getColumn();
+						plan.remove(re);
 					}
 				}
 				break;
@@ -65,44 +66,72 @@ public class AI {
 		return true;
 	}
 	
+	private ArrayList<Piece> checkDiagonal(int column, int row){
+		//top left diagonal
+		int i = column;
+		int j = row;
+		ArrayList<Piece> pieces = new ArrayList<>();
+		int[][] board = gb.getBoard();
+		for(i = column, j = row; i >= 0 && j >= 0; i--, j--) {
+			if(board[i][j] == 0 || board[i][j] == 2) {
+				pieces.add(new Piece(0, 0, i, j, Color.RED));
+				if(pieces.size() >= 4) {
+					return pieces;
+				}
+			} else {
+				pieces.clear();
+			}
+		}
+		//bottom right diagonal
+		for(i = column, j = row; i >= 0 && j < 6; i--, j++) {
+			if(board[i][j] == 0 || board[i][j] == 2) {
+				pieces.add(new Piece(0, 0, i, j, Color.RED));
+				if(pieces.size() >= 4) {
+					return pieces;
+				}
+			} else {
+				pieces.clear();
+			}
+		}
+		//bottom left diagonal
+		for(i = column, j = row; i < 7 && j >= 0; i++, j--) {
+			if(board[i][j] == 0 || board[i][j] == 2) {
+				pieces.add(new Piece(0, 0, i, j, Color.RED));
+				if(pieces.size() >= 4) {
+					return pieces;
+				}
+			} else {
+				pieces.clear();
+			}
+		}
+		//top right diagonal
+		for(i = column, j = row; i < 7 && j < 6; i++, j++) {
+			if(board[i][j] == 0 || board[i][j] == 2) {
+				pieces.add(new Piece(0, 0, i, j, Color.RED));
+				if(pieces.size() >= 4) {
+					return pieces;
+				}
+			} else {
+				pieces.clear();
+			}
+		}
+		return pieces;
+	}
+	
 	private ArrayList<Piece> checkDiagonalSearch(){
 		//check left diagonal
-		ArrayList<Piece> pieces = new ArrayList();
+		ArrayList<Piece> pieces = new ArrayList<>();
 		int[][] board = gb.getBoard();
 		//we check each column, and every row that's possible in that column
-		for(int i = board.length - 1; i >= 0; i--) {
-			//now check diagonals
-			//dont need to check above 3 as we can't get a diagonal up there
-			for(int j = board[i].length - 1; j > 3; j--) {
-				for(int k = i; k >= 0; k--) {
-					if(board[k][j] == 0 || board[k][j] == 2) {
-						pieces.add(new Piece(0, 0, k, j, Color.YELLOW));
-					}else {
-						pieces.clear();
-					}
-					if(pieces.size() >= 4) {
-						return pieces;
-					}
-				}
-			}
-		}
-		//check right diagonal
 		for(int i = 0; i < board.length; i++) {
-			//now check diagonals
-			//dont need to check above 3 as we can't get a diagonal up there
-			for(int j = board[i].length - 1; j > 3; j--) {
-				for(int k = i; k < board.length; k++) {
-					if(board[k][j] == 0 || board[k][j] == 2) {
-						pieces.add(new Piece(0, 0, k, j, Color.YELLOW));
-					}else {
-						pieces.clear();
-					}
-					if(pieces.size() >= 4) {
-						return pieces;
-					}
+			for(int j = 0; j < board[i].length; j++) {
+				pieces = checkDiagonal(i, j);
+				if(pieces.size() > 0) {
+					return pieces;
 				}
 			}
 		}
+		
 		return pieces;
 	}
 	
@@ -114,11 +143,11 @@ public class AI {
 			for(int i = 0; i < board.length; i++) {
 				if(board[i][j] == 0 || board[i][j] == 2) {
 					columns.add(new Piece(0, 0, i, j, Color.RED));
+					if(columns.size() >= 4) {
+						return columns;
+					}
 				}else {
 					columns.clear();
-				}
-				if(columns.size() == 4) {
-					return columns;
 				}
 			}
 		}
@@ -134,17 +163,27 @@ public class AI {
 			for(int j = board[i].length - 1; j >= 0; j--) {
 				if(board[i][j] == 0 || board[i][j] == 2) {
 					columns.add(new Piece(0, 0, i, j, Color.RED));
+					if(columns.size() >= 4) {
+						return columns;
+					}
 				}else {
 					columns.clear();
-				}
-				if(columns.size() == 4) {
-					return columns;
 				}
 			}
 		}
 		return columns;
 	}
-	
+	private ArrayList<Piece> randomPiece(){
+		ArrayList<Piece> sp = new ArrayList<>();
+		int[][] board = gb.getBoard();
+		for(int i = 0; i < board.length; i++) {
+			if(board[i][0] == 0) {
+				sp.add(new Piece(0, 0, i, 0, Color.RED));
+				break;
+			}
+		}
+		return sp;
+	}
 	
 	public int searching() {
 		plan.clear();
@@ -159,6 +198,9 @@ public class AI {
 		//if can't find anywhere else try just stacking vertically
 		if(sp.size() <= 0) {
 			sp = checkVerticalSearch();
+		}
+		if(sp.size() <= 0) {
+			sp = randomPiece();
 		}
 		int[][] b = gb.getBoard();
 		for(int i = sp.size() - 1; i >= 0; i--) {
@@ -184,7 +226,7 @@ public class AI {
 		for(int i = col; i >= 0; i--) {
 			if(board[i][row] == 1) {
 				c++;
-				if(c == 3) {
+				if(c == 2) {
 					//find open column to block
 					int j;
 					for(j = i; j < 7; j++) {
@@ -208,7 +250,7 @@ public class AI {
 		for(int i = col; i < 7; i++) {
 			if(board[i][row] == 1) {
 				c++;
-				if(c == 3) {
+				if(c == 2) {
 					//find open column to block
 					int j;
 					for(j = i; j < 7; j++) {
@@ -240,7 +282,58 @@ public class AI {
 		//couldn't find spot on cardinals
 		return -1;
 	}
-	private int checkDiagonalsDefense() {
+	private int checkDiagonalsDefense(){
+		//top left diagonal
+		int i = gb.getLastColumn();
+		int j = gb.getLastRow();
+		int[][] board = gb.getBoard();
+		int c = 0;
+		for(i = gb.getLastColumn(), j = gb.getLastRow(); i >= 0 && j >= 0; i--, j--) {
+			if(board[i][j] == 1) {
+				c++;
+				if(c >= 3) {
+					return i;
+				}
+			} else {
+				c = 0;
+			}
+		}
+		c = 0;
+		//bottom right diagonal
+		for(i = gb.getLastColumn(), j = gb.getLastRow(); i >= 0 && j < 6; i--, j++) {
+			if(board[i][j] == 1) {
+				c++;
+				if(c >= 3) {
+					return i;
+				}
+			} else {
+				c = 0;
+			}
+		}
+		c = 0;
+		//bottom left diagonal
+		for(i = gb.getLastColumn(), j = gb.getLastRow(); i < 7 && j >= 0; i++, j--) {
+			if(board[i][j] == 1) {
+				c++;
+				if(c >= 3) {
+					return i;
+				}
+			} else {
+				c = 0;
+			}
+		}
+		c = 0;
+		//top right diagonal
+		for(i = gb.getLastColumn(), j = gb.getLastRow(); i < 7 && j < 6; i++, j++) {
+			if(board[i][j] == 1) {
+				c++;
+				if(c >= 3) {
+					return i;
+				}
+			} else {
+				c = 0;
+			}
+		}
 		return -1;
 	}
 	

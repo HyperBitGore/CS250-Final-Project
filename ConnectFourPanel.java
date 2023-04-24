@@ -9,27 +9,61 @@ import javax.swing.JPanel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+
+class Trail{
+	private int x;
+	private int y;
+	private Color c;
+	
+	public Trail(int x, int y, Color c) {
+		this.x = x;
+		this.y = y;
+		this.c = c;
+	}
+	
+	public boolean update(Graphics g) {
+		g.setColor(c);
+		g.drawOval(x, y, 2, 2);
+		if(c.getAlpha() - 10 <= 0) {
+			return false;
+		}
+		c = new Color(c.getRed(), c.getGreen(), c.getGreen(), c.getAlpha() - 10);
+		return true;
+	}
+}
+
 class Particle{
 	private float x;
 	private float y;
 	private int updateC;
-	private float y_inc = -2.0f;
+	private float y_inc;
 	private float x_inc;
 	private boolean left;
-	public Particle(int x, int y, boolean left) {
+	private ArrayList<Trail> trail;
+	
+	public Particle(int x, int y, int angle, boolean left) {
 		updateC = 0;
+		double ang_r = (((double) angle) * Math.PI / 180.0);
+		double xc = Math.cos(ang_r);
+		double yc = Math.sin(ang_r);
+		x_inc = (float) xc;
+		y_inc = (float) yc;
 		this.left = left;
-		if(left) {
-			x_inc = (float) (-Math.random() * 2.5f + 2.0f);
-		}else {
-			x_inc = (float) (Math.random() * 2.5f + 2.0f);;
-		}
 		this.x = x;
 		this.y = y;
+		trail = new ArrayList<>();
 	}
 	
-	public void update(Graphics g) {
-		y_inc += 0.05f;
+	public void update(Graphics g, Color color) {
+		for(int i = 0; i < trail.size();) {
+			if(!trail.get(i).update(g)) {
+				trail.remove(i);
+			}else {
+				i++;
+			}
+		}
+		
+		y_inc += 0.03f;
 		if(left) {
 			x_inc += 0.01f;
 		}else {
@@ -41,6 +75,7 @@ class Particle{
 		int xr = (int) x;
 		int yr = (int) y;
 		g.drawOval(xr, yr, 2, 2);
+		trail.add(new Trail(xr, yr, color));
 	}
 	public int getCount() {
 		return updateC;
@@ -65,24 +100,32 @@ class Firework{
 		this.color = color;
 		updateCount = 0;
 		points = new ArrayList<>();
-		int n = 50;
-		for(int i = 0; i < n; i++) {
+		int n = 20;
+		int ang = 0;
+		int ang_inc = 360 / n;
+		for(int i = 0; i < n; i++, ang += ang_inc) {
 			boolean f = false;
-			if(i > 25) {
+			int r = (int) (Math.random() * 100);
+			if(r >= 50) {
 				f = true;
 			}
-			int xr = (int) (Math.random() * w + x);
-			int yr = (int) (Math.random() * h + y);
-			points.add(new Particle(xr, yr, f));
+			//int xr = (int) (Math.random() * w + x);
+			//int yr = (int) (Math.random() * h + y);
+			
+			points.add(new Particle(x, y, ang, f));
 		}
 	}
 	
 	public boolean updateDraw(Graphics g) {
 		g.setColor(color);
 		for(Particle p : points) {
-			p.update(g);
+			p.update(g, color);
 		}
 		updateCount++;
+		if(color.getAlpha() - 5 <= 0) {
+			return true;
+		}
+		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() - 2);
 		return (updateCount >= 200);
 	}
 }
@@ -133,7 +176,7 @@ public class ConnectFourPanel extends JPanel {
 		if(l_win == 1) {
 			c = Color.RED;
 		}else {
-			c = Color.YELLOW;
+			c = Color.GREEN;
 		}
 		int x = (int) (Math.random() * 350);
 		int y = (int) (Math.random() * 300);
@@ -143,22 +186,22 @@ public class ConnectFourPanel extends JPanel {
 	
 	public ConnectFourPanel(boolean ai) {
 		gb = new Gameboard();
-		pl1 = new Player(true, new Color(255, 50, 50));
-		pl2 = new Player(false, new Color(255, 255, 0));
+		pl1 = new Player(true, Color.RED);
+		pl2 = new Player(false, Color.GREEN);
 		sel_piece = new Piece(0, 0, 0, 0, pl1.getCol());
 		opp_ai = new AI(gb);
 		won = false;
 		fireworks = new ArrayList<>();
 		setLayout(null);
 		player1 = new JLabel("Player 1: 0");
-		player1.setForeground(new Color(255, 255, 255));
+		player1.setForeground(Color.RED);
 		player1.setBackground(new Color(255, 255, 255));
 		player1.setFont(new Font("Agency FB", Font.PLAIN, 28));
 		player1.setBounds(10, 400, 200, 34);
 		add(player1);
 		
 		player2 = new JLabel("Player 2: 0");
-		player2.setForeground(new Color(255, 255, 255));
+		player2.setForeground(Color.GREEN);
 		player2.setFont(new Font("Agency FB", Font.PLAIN, 28));
 		player2.setBounds(10, 440, 200, 34);
 		add(player2);
@@ -272,7 +315,7 @@ public class ConnectFourPanel extends JPanel {
 		}
 		
 		if(won) {
-			g.setColor(Color.GREEN);
+			g.setColor(Color.BLUE);
 			int x1 =  20 + win_pieces.get(0).getColumn() * 50;
 			int y1 = 50 + (win_pieces.get(0).getRow() * 48);
 			int x2 = 20 + (win_pieces.get(win_pieces.size() - 1).getColumn() * 50);
@@ -283,13 +326,7 @@ public class ConnectFourPanel extends JPanel {
 				fireworkAnimation();
 				fire_update = 0;
 			}
-			/*int x = 10 + win_pieces.get(0).getColumn() * 50;
-			int y = 40 + (win_pieces.get(win_pieces.size() - 1).getRow() * 48);
-			int w = 50 + (win_pieces.get(win_pieces.size() - 1).getColumn() - win_pieces.get(0).getColumn()) * 50;
-			int h = 48 + (win_pieces.get(0).getRow() - win_pieces.get(win_pieces.size() - 1).getRow()) * 48;
-			
-			System.out.println("X: " + x + " w: " + w + " h: " + h + " y:" + y);
-			g.drawOval(x, y, w, h);*/
+		
 		}
 		revalidate();
 		repaint();
