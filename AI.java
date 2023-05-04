@@ -241,7 +241,6 @@ public class AI {
 		if(plan.size() <= 0) {
 			return -1;
 		}
-		System.out.println(plan);
 		return 0;
 	}
 	
