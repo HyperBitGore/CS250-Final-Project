@@ -1,21 +1,19 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
-enum State{
-	SEARCHING, EXECUTING
-}
+
+
+
 
 
 
 
 public class AI {
-	private State state;
 	private Gameboard gb; // copy of gameboard
 	private ArrayList<Piece> plan; //plan of where to place pieces
 	
 	
 	public AI(Gameboard g) {
-		state = State.SEARCHING;
 		g = gb;
 		plan = new ArrayList<>();
 	}
@@ -28,35 +26,30 @@ public class AI {
 		int ret = 0;
 		ret = defending();
 		if(ret == -1) {
-			switch(state) {
-			case SEARCHING:
-				int r = searching();
-				ret = plan.get(r).getColumn();
-				plan.remove(r);
-				break;
-			case EXECUTING:
-				if(!checkExecution()) {
+			if(!checkExecution()) {
+				int re = searching();
+				ret = plan.get(re).getColumn();
+				plan.remove(re);
+			}else {
+				//follow plan from searching turn, check if plan gets blocked and change
+				if(plan.size() > 0) {
+					ret = plan.get(0).getColumn();
+					plan.remove(0);
+				}else {
 					int re = searching();
 					ret = plan.get(re).getColumn();
 					plan.remove(re);
-				}else {
-					//follow plan from searching turn, check if plan gets blocked and change
-					if(plan.size() > 0) {
-						ret = plan.get(0).getColumn();
-					}else {
-						int re = searching();
-						ret = plan.get(re).getColumn();
-						plan.remove(re);
-					}
 				}
-				break;
 			}
-			}
+		}
 		return ret;
 		
 	}
 	
 	public boolean checkExecution() {
+		if(plan.size() <= 0) {
+			return false;
+		}
 		Piece p = plan.get(0);
 		int[][] board = gb.getBoard();
 		if(board[p.getColumn()][p.getRow()] != 0) {
@@ -66,49 +59,80 @@ public class AI {
 		return true;
 	}
 	
+	private boolean checkBelow(int column, int row) {
+		int[][] board = gb.getBoard();
+		for(int i = row + 1; i < 6; i++) {
+			if(board[column][i] == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	private ArrayList<Piece> checkDiagonal(int column, int row){
 		//top left diagonal
 		int i = column;
 		int j = row;
 		ArrayList<Piece> pieces = new ArrayList<>();
 		int[][] board = gb.getBoard();
+		int c = 0;
 		for(i = column, j = row; i >= 0 && j >= 0; i--, j--) {
+			c += (board[i][j] == 2) ? 1 : -c;
 			if(board[i][j] == 0 || board[i][j] == 2) {
-				pieces.add(new Piece(0, 0, i, j, Color.RED));
-				if(pieces.size() >= 4) {
+				if(checkBelow(i, j)) {
+					pieces.add(new Piece(0, 0, i, j, Color.RED));
+				}
+				if(pieces.size() >= 4 || c >= 3) {
 					return pieces;
 				}
 			} else {
 				pieces.clear();
 			}
 		}
+		//incase it exits before getting to clear again
+		pieces.clear();
+		c = 0;
 		//bottom right diagonal
 		for(i = column, j = row; i >= 0 && j < 6; i--, j++) {
+			c += (board[i][j] == 2) ? 1 : -c;
 			if(board[i][j] == 0 || board[i][j] == 2) {
-				pieces.add(new Piece(0, 0, i, j, Color.RED));
-				if(pieces.size() >= 4) {
+				if(checkBelow(i, j)) {
+					pieces.add(new Piece(0, 0, i, j, Color.RED));
+				}
+				if(pieces.size() >= 4 || c >= 3) {
 					return pieces;
 				}
 			} else {
 				pieces.clear();
 			}
 		}
+		pieces.clear();
+		c = 0;
 		//bottom left diagonal
 		for(i = column, j = row; i < 7 && j >= 0; i++, j--) {
+			c += (board[i][j] == 2) ? 1 : -c;
 			if(board[i][j] == 0 || board[i][j] == 2) {
-				pieces.add(new Piece(0, 0, i, j, Color.RED));
-				if(pieces.size() >= 4) {
+				if(checkBelow(i, j)) {
+					pieces.add(new Piece(0, 0, i, j, Color.RED));
+				}
+				if(pieces.size() >= 4 || c >= 3) {
 					return pieces;
 				}
 			} else {
 				pieces.clear();
 			}
 		}
+		pieces.clear();
+		c = 0;
 		//top right diagonal
 		for(i = column, j = row; i < 7 && j < 6; i++, j++) {
+			c += (board[i][j] == 2) ? 1 : -c;
 			if(board[i][j] == 0 || board[i][j] == 2) {
-				pieces.add(new Piece(0, 0, i, j, Color.RED));
-				if(pieces.size() >= 4) {
+				if(checkBelow(i, j)) {
+					pieces.add(new Piece(0, 0, i, j, Color.RED));
+				}
+				if(pieces.size() >= 4 || c >= 3) {
 					return pieces;
 				}
 			} else {
@@ -140,10 +164,14 @@ public class AI {
 		int[][] board = gb.getBoard();
 		//check all rows too, and check for own pieces in a row to find easier place to win
 		for(int j = 0; j < 6; j++) {
+			int c = 0;
 			for(int i = 0; i < board.length; i++) {
+				c += (board[i][j] == 2) ? 1 : -c;
 				if(board[i][j] == 0 || board[i][j] == 2) {
-					columns.add(new Piece(0, 0, i, j, Color.RED));
-					if(columns.size() >= 4) {
+					if(checkBelow(i, j)) {
+						columns.add(new Piece(0, 0, i, j, Color.RED));
+					}
+					if(columns.size() >= 4 || c >= 3) {
 						return columns;
 					}
 				}else {
@@ -161,9 +189,10 @@ public class AI {
 		for(int i = 0; i < board.length; i++) {
 			int c = 0;
 			for(int j = board[i].length - 1; j >= 0; j--) {
+				c += (board[i][j] == 2) ? 1 : -c;
 				if(board[i][j] == 0 || board[i][j] == 2) {
 					columns.add(new Piece(0, 0, i, j, Color.RED));
-					if(columns.size() >= 4) {
+					if(columns.size() >= 4 || c >= 3) {
 						return columns;
 					}
 				}else {
@@ -177,6 +206,7 @@ public class AI {
 		ArrayList<Piece> sp = new ArrayList<>();
 		int[][] board = gb.getBoard();
 		for(int i = 0; i < board.length; i++) {
+			System.out.println(board[i][0]);
 			if(board[i][0] == 0) {
 				sp.add(new Piece(0, 0, i, 0, Color.RED));
 				break;
@@ -204,11 +234,14 @@ public class AI {
 		}
 		int[][] b = gb.getBoard();
 		for(int i = sp.size() - 1; i >= 0; i--) {
-			if(b[sp.get(i).getColumn()][sp.get(i).getRow()] == 0) {
+			//if(b[sp.get(i).getColumn()][sp.get(i).getRow()] == 0) {
 				plan.add(sp.get(i));
-			}
+			//}
 		}
-		state = State.EXECUTING;
+		if(plan.size() <= 0) {
+			return -1;
+		}
+		System.out.println(plan);
 		return 0;
 	}
 	
@@ -226,23 +259,16 @@ public class AI {
 		for(int i = col; i >= 0; i--) {
 			if(board[i][row] == 1) {
 				c++;
-				if(c == 2) {
+				if(c == 2 || c == 3) {
 					//find open column to block
-					int j;
-					for(j = i; j < 7; j++) {
-						if(board[j][row] != 1) {
-							break;
-						}
+					if(i + c < 7 && board[i + c][row] == 0) {
+						return i + c;
+					}else if(i - c >= 0 && board[i - c][row] == 0) {
+						return i - c;
 					}
-					if(j == 7) {
-						for(j = i; j >= 0; j--) {
-							if(board[j][row] != 1) {
-								break;
-							}
-						}
-					}
-					return j;
 				}
+			}else {
+				c = 0;
 			}
 		}
 		//right
@@ -250,23 +276,16 @@ public class AI {
 		for(int i = col; i < 7; i++) {
 			if(board[i][row] == 1) {
 				c++;
-				if(c == 2) {
+				if(c == 2 || c == 3) {
 					//find open column to block
-					int j;
-					for(j = i; j < 7; j++) {
-						if(board[j][row] != 1) {
-							break;
-						}
+					if(i + c < 7 && board[i + c][row] == 0) {
+						return i + c;
+					}else if(i - c >= 0 && board[i - c][row] == 0) {
+						return i - c;
 					}
-					if(j == 7) {
-						for(j = i; j >= 0; j--) {
-							if(board[j][row] != 1) {
-								break;
-							}
-						}
-					}
-					return j;
 				}
+			}else {
+				c = 0;
 			}
 		}
 		//check vertical

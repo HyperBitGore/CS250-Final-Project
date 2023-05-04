@@ -82,7 +82,7 @@ class Particle{
 	}
 }
 
-
+//took some inspiration from https://www.youtube.com/watch?v=CKeyIbT3vXI
 class Firework{
 	private int x;
 	private int y;
@@ -109,10 +109,9 @@ class Firework{
 			if(r >= 50) {
 				f = true;
 			}
-			//int xr = (int) (Math.random() * w + x);
-			//int yr = (int) (Math.random() * h + y);
-			
-			points.add(new Particle(x, y, ang, f));
+			//add a random change to the angle
+			int c_ang = (int) (Math.random() * 20);
+			points.add(new Particle(x, y, ang + c_ang, f));
 		}
 	}
 	
